@@ -15,7 +15,7 @@ jobs:
           # If your repository depends on submodule, please see: https://github.com/actions/checkout
            #submodules: recursive
       - name: Use Node.js 16.x
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16'
       - name: Cache NPM dependencies
@@ -27,6 +27,11 @@ jobs:
             ${{ runner.OS }}-npm-cache
       - name: Install Dependencies
         run: npm install
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_DEPLOY_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
       - name: Build
         run: npm run build
       - name: Upload Pages artifact
