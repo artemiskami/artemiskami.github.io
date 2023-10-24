@@ -13,7 +13,7 @@ jobs:
       - name: Clone Repo
         uses: actions/checkout@v3
         with:
-          repository: Username/Repository
+          repository: artemiskami/artemiskami.github.io
           path: .deploy_git
 
       - name: Setup Node
