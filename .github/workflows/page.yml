@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - hexo # default branch
+env:
+  GIT_USER: artemis
+  GIT_EMAIL: xiyuekamisama@
+  #THEME_REPO: jerryc127/hexo-theme-butterfly
+  #THEME_BRANCH: hexo
 
 jobs:
   build:
@@ -13,7 +18,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           # If your repository depends on submodule, please see: https://github.com/actions/checkout
-          submodules: recursive
+          #submodules: recursive
       - name: Use Node.js 18.x
         uses: actions/setup-node@v2
         with:
