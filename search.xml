@@ -1,0 +1,781 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>apache-yarn基本配置描述</title>
+    <url>/2023/04/23/apache-yarn%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE%E6%8F%8F%E8%BF%B0/</url>
+    <content><![CDATA[<h2 id="节点服务器配置"><a href="#节点服务器配置" class="headerlink" title="节点服务器配置"></a>节点服务器配置</h2><figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>arthas监控idea上代码执行时间</title>
+    <url>/2023/12/04/arthas%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="windows安装-arthas"><a href="#windows安装-arthas" class="headerlink" title="windows安装 arthas"></a>windows安装 arthas</h2><p>下载arthas-boot</p>
+<p><code>https://arthas.aliyun.com/arthas-boot.jar</code></p>
+<h2 id="idea安装插件-arthas"><a href="#idea安装插件-arthas" class="headerlink" title="idea安装插件 arthas"></a>idea安装插件 arthas</h2><p>file-&gt;setting-&gt;plugins-&gt;marketplace 搜索 arthas</p>
+<p>安装下载</p>
+<p>选择要监控类方法名，右键 arthas command</p>
+<p>选择要监控的内容，这里查看耗时，选择trace,会将命令复制到剪切板。</p>
+<h2 id="启动监控"><a href="#启动监控" class="headerlink" title="启动监控"></a>启动监控</h2><p>启动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">java -jar D:\Java\arthas\arthas-boot.jar</span><br></pre></td></tr></table></figure>
+
+<p>选择idea启动的应用程序名称</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">[INFO] JAVA_HOME: D:\Java\jre</span><br><span class="line">[INFO] arthas-boot version: <span class="number">3.7</span><span class="number">.1</span></span><br><span class="line">[INFO] Found existing java process, please choose one and input the serial number of the process, eg : <span class="number">1.</span> Then hit ENTER.</span><br><span class="line">* [<span class="number">1</span>]: <span class="number">12160</span> org.jetbrains.plugins.scala.nailgun.NailgunRunner</span><br><span class="line">  [<span class="number">2</span>]: <span class="number">23328</span> com.artemis.flink.admin.FlinkApplication</span><br><span class="line">  [<span class="number">3</span>]: <span class="number">24336</span> org.jetbrains.jps.cmdline.Launcher</span><br><span class="line">  [<span class="number">4</span>]: <span class="number">25008</span> org.jetbrains.idea.maven.server.RemoteMavenServer36</span><br></pre></td></tr></table></figure>
+
+<p>输入 2 ,选择要监控的java进程</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">[INFO] arthas home: C:\Users\artemis\.arthas\lib\<span class="number">3.7</span><span class="number">.1</span>\arthas</span><br><span class="line">[INFO] Try to attach process <span class="number">23328</span></span><br><span class="line">[INFO] Found java home from System Env JAVA_HOME: D:\Java\jdk1<span class="number">.8</span><span class="number">.0_202</span></span><br><span class="line">[INFO] Attach process <span class="number">23328</span> success.</span><br><span class="line">[INFO] arthas-client connect <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> <span class="number">3658</span></span><br><span class="line">  ,---.  ,------. ,--------.,--.  ,--.  ,---.   ,---.</span><br><span class="line"> /  O  \ |  .--. <span class="string">&#x27;&#x27;</span>--.  .--<span class="string">&#x27;|  &#x27;</span>--<span class="string">&#x27;  | /  O  \ &#x27;</span>   .-<span class="string">&#x27;</span></span><br><span class="line"><span class="string">|  .-.  ||  &#x27;</span>--<span class="string">&#x27;.&#x27;</span>   |  |   |  .--.  ||  .-.  |`.  `-.</span><br><span class="line">|  | |  ||  |\  \    |  |   |  |  |  ||  | |  |.-<span class="string">&#x27;    |</span></span><br><span class="line"><span class="string">`--&#x27;</span> `--<span class="string">&#x27;`--&#x27;</span> <span class="string">&#x27;--&#x27;</span>   `--<span class="string">&#x27;   `--&#x27;</span>  `--<span class="string">&#x27;`--&#x27;</span> `--<span class="string">&#x27;`-----&#x27;</span></span><br><span class="line"></span><br><span class="line">wiki       https:<span class="comment">//arthas.aliyun.com/doc</span></span><br><span class="line">tutorials  https:<span class="comment">//arthas.aliyun.com/doc/arthas-tutorials.html</span></span><br><span class="line">version    <span class="number">3.7</span><span class="number">.1</span></span><br><span class="line">main_class</span><br><span class="line">pid        <span class="number">23328</span></span><br><span class="line">time       <span class="number">2023</span>-<span class="number">12</span>-<span class="number">04</span> <span class="number">14</span>:<span class="number">15</span>:<span class="number">12</span></span><br><span class="line">[arthas@<span class="number">23328</span>]$</span><br></pre></td></tr></table></figure>
+
+<p>将复制的命令粘贴上</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">trace com.artemis.flink.admin.moudle.tableasset.service.TableCycleProcessor process  -n <span class="number">5</span> --skipJDKMethod <span class="literal">false</span> </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Press Q or Ctrl+C to abort.</span><br><span class="line">Affect(<span class="keyword">class</span> <span class="title class_">count</span>: <span class="number">1</span> , method count: <span class="number">1</span>) cost in <span class="number">218</span> ms, listenerId: <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>就可以啦</p>
+]]></content>
+      <categories>
+        <category>arthas</category>
+      </categories>
+      <tags>
+        <tag>arthas</tag>
+        <tag>idea</tag>
+        <tag>性能</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>arthas查看耗时</title>
+    <url>/2023/11/08/arthas%E6%9F%A5%E7%9C%8B%E8%80%97%E6%97%B6/</url>
+    <content><![CDATA[<h4 id="切换到要操作项目的启动用户"><a href="#切换到要操作项目的启动用户" class="headerlink" title="切换到要操作项目的启动用户"></a>切换到要操作项目的启动用户</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo su - artemis</span><br></pre></td></tr></table></figure>
+
+<h4 id="启动arthas"><a href="#启动arthas" class="headerlink" title="启动arthas"></a>启动arthas</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">java -jar arthas-boot.jar</span><br></pre></td></tr></table></figure>
+
+<h5 id="选择要处理的项目"><a href="#选择要处理的项目" class="headerlink" title="选择要处理的项目"></a>选择要处理的项目</h5><h5 id="跟踪调用的方法"><a href="#跟踪调用的方法" class="headerlink" title="跟踪调用的方法"></a>跟踪调用的方法</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">trace -skipJDKMethod <span class="literal">false</span> com.artemis.dehp.service.TableAssetService queryTableLineageInfo</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>-skipJDKMethod false</code>是显示jdk调用的方法</li>
+<li><code>com.artemis.dehp.service.TableAssetService</code> 是类名</li>
+<li><code>queryTableLineageInfo</code> 是要跟踪的方法</li>
+</ul>
+<p>显示如下</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">`---[<span class="number">618.</span>866814ms] com.definesys.dehoop.admin.moudle.tableasset.service.TableAssetService:queryTableLineageInfo()</span><br><span class="line">        +---[<span class="number">1.80</span>% <span class="number">11.</span>157153ms ] com.artemis.dehp.admin.moudle.atlas.service.AtlasUtilService:queryTableLineageByTableGuid() #<span class="number">2527</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>009611ms ] com.artemis.dehp.admin.moudle.tableasset.pojo.dto.TableLineageInfo:&lt;init&gt;() #<span class="number">2534</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>007696ms ] java.util.ArrayList:&lt;init&gt;() #<span class="number">2536</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>005548ms ] java.util.ArrayList:&lt;init&gt;() #<span class="number">2537</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>00581ms ] java.util.ArrayList:&lt;init&gt;() #<span class="number">2539</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>006477ms ] java.util.HashMap:&lt;init&gt;() #<span class="number">2541</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>007723ms ] java.lang.ThreadLocal:get() #<span class="number">2544</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>008286ms ] java.util.Optional:ofNullable() #<span class="number">2544</span></span><br><span class="line">        +---[<span class="number">88.25</span>% <span class="number">546.</span>18016ms ] java.util.Optional:orElseGet() #<span class="number">2544</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>011312ms ] org.apache.atlas.model.lineage.AtlasLineageInfo:getGuidEntityMap() #<span class="number">2554</span></span><br><span class="line">        +---[<span class="number">9.78</span>% <span class="number">60.</span>51491ms ] java.util.Map:forEach() #<span class="number">2554</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>008861ms ] java.util.HashMap:&lt;init&gt;() #<span class="number">2572</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>00973ms ] org.apache.atlas.model.lineage.AtlasLineageInfo:getRelations() #<span class="number">2575</span></span><br><span class="line">        +---[<span class="number">0.01</span>% <span class="number">0.</span>092723ms ] java.util.Set:forEach() #<span class="number">2575</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>006714ms ] org.apache.atlas.model.lineage.AtlasLineageInfo:getRelations() #<span class="number">2600</span></span><br><span class="line">        +---[<span class="number">0.05</span>% <span class="number">0.</span>326241ms ] java.util.Set:forEach() #<span class="number">2600</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>012533ms ] java.util.List:stream() #<span class="number">2634</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>014577ms ] java.util.stream.Stream:distinct() #<span class="number">2634</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>007693ms ] java.util.stream.Collectors:toList() #<span class="number">2634</span></span><br><span class="line">        +---[<span class="number">0.01</span>% <span class="number">0.</span>053077ms ] java.util.stream.Stream:collect() #<span class="number">2634</span></span><br><span class="line">        +---[<span class="number">0.00</span>% <span class="number">0.</span>008667ms ] com.artemis.dehp.tableasset.pojo.dto.TableLineageInfo:setRelation() #<span class="number">2634</span></span><br><span class="line">        `---[<span class="number">0.00</span>% <span class="number">0.</span>006787ms ] com.artemis.dehp.tableasset.pojo.dto.TableLineageInfo:setNodeList() #<span class="number">2635</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>arthas</tag>
+        <tag>java</tag>
+        <tag>线上调试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>atlas血缘查询优化</title>
+    <url>/2023/11/08/atlas%E8%A1%80%E7%BC%98%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>客户提了一个bug，前端访问超时。</p>
+<ol>
+<li><p>先用postman调用超时的接口，发现执行时间大约4min,前端接口默认超时时间是15s;</p>
+<p>2.用arthas排查之后，主要耗时在：有一段逻辑需要给查询到的血缘信息中所有entity添加自定义信息，代码中是循环调用接口获取数据，血缘复杂之后，实体很多，而atlas返回数据有瓶颈。</p>
+</li>
+</ol>
+<h2 id="第一次优化"><a href="#第一次优化" class="headerlink" title="第一次优化"></a>第一次优化</h2><p>考虑 <code>for</code>循环<code>guid</code>单个接口比较慢，添加方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> AtlasEntity.AtlasEntitiesWithExtInfo <span class="title function_">getAtlasEntityByGuids</span><span class="params">(List&lt;String&gt; guids)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (CollectionUtils.isEmpty(guids))&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">AtlasEntity</span>.AtlasEntitiesWithExtInfo();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> atlasClientV2.getEntitiesByGuids(guids);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (AtlasServiceException e) &#123;</span><br><span class="line">            log.error(e.getMessage());</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过直接传入所有guid的方式，减少http接口调用次数，来获取数据。</p>
+<p>将在for循环中单次调用再执行所需要的数据抽离出来，先一次取出，后面处理逻辑直接在list中读数据循环。</p>
+<p>重新发布之后，时间缩减为2min20s左右。</p>
+<h2 id="第二次优化"><a href="#第二次优化" class="headerlink" title="第二次优化"></a>第二次优化</h2><p>通过查看atlas源代码，发现</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (String guid : guids) &#123;</span><br><span class="line">            <span class="type">AtlasVertex</span> <span class="variable">vertex</span> <span class="operator">=</span> getEntityVertex(guid);</span><br><span class="line"></span><br><span class="line">            <span class="type">AtlasEntity</span> <span class="variable">entity</span> <span class="operator">=</span> mapVertexToAtlasEntity(vertex, ret, isMinExtInfo);</span><br><span class="line"></span><br><span class="line">            ret.addEntity(entity);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> AtlasVertex <span class="title function_">getEntityVertex</span><span class="params">(String guid)</span> <span class="keyword">throws</span> AtlasBaseException &#123;</span><br><span class="line">        <span class="type">AtlasVertex</span> <span class="variable">ret</span> <span class="operator">=</span> AtlasGraphUtilsV2.findByGuid(<span class="built_in">this</span>.graph, guid);</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>atlas在取到所有<code>guid</code>之后，自身还在<code>for</code>循环单个查询entity。</p>
+<p>考虑到以hbase作为存储，优化hbase参数，增加了hbase的线程数等。优化之后，时间缩减为30s</p>
+<h2 id="第三次优化"><a href="#第三次优化" class="headerlink" title="第三次优化"></a>第三次优化</h2><p>hbase的查询效率应该还可以优化，但是更加细致的参数调优需要时间，只能后面再优化，考虑优化代码。</p>
+<p>因为atlas对于一次传递多个guid的处理方式也是通过单个循环的，所以这里考虑在项目中多线程调用单个执行的接口。</p>
+<ol>
+<li>修改atlas web接口的线程数</li>
+<li>并发调用</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">guids.parallelStream().map(atlasUtilService::getAtlasEntityByGuid).collect(Collectors.toList());</span><br></pre></td></tr></table></figure>
+
+<p>到这里，atlas接口调用缩减为2.8s左右。至此，前端调用已经不报错了</p>
+<h2 id="最终版"><a href="#最终版" class="headerlink" title="最终版"></a>最终版</h2><p>上面使用的parallelStream使用的是公用线程池，考虑使用自定义线程，提高并发执行效率。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">                entities = forkJoinPool.submit(()-&gt;guids.parallelStream().map(atlasUtilService::getAtlasEntityByGuid).collect(Collectors.toList())).get();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException | ExecutionException e) &#123;</span><br><span class="line">                log.error(<span class="string">&quot;atlas 查询guid&#123;&#125;失败&quot;</span>,guids,e);</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过arthas，看到方法执行的调用栈中有两次获取所有数据，方法嵌套的比较深，考虑不修改数据函数签名的前提下，缓存数据。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> ThreadLocal&lt;AtlasEntity.AtlasEntitiesWithExtInfo&gt; LineageRelations = <span class="keyword">new</span> <span class="title class_">ThreadLocal</span>&lt;&gt;();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="最后代码"><a href="#最后代码" class="headerlink" title="最后代码"></a><strong>最后代码</strong></h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">AtlasEntity.<span class="type">AtlasEntitiesWithExtInfo</span> <span class="variable">atlasEntitiesWithExtInfo</span> <span class="operator">=</span> Optional.ofNullable(LineageRelations.get()).orElseGet(()-&gt;&#123;</span><br><span class="line">            <span class="keyword">final</span> List&lt;String&gt; guids = atlasLineageInfo.getGuidEntityMap().values().stream()</span><br><span class="line">                .map(AtlasEntityHeader::getGuid).collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">            <span class="type">int</span> <span class="variable">cupNum</span> <span class="operator">=</span> Runtime.getRuntime().availableProcessors();</span><br><span class="line">            <span class="type">ForkJoinPool</span> <span class="variable">forkJoinPool</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ForkJoinPool</span>(cupNum*<span class="number">2</span>);</span><br><span class="line">            List&lt;AtlasEntity&gt; entities ;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                entities = forkJoinPool.submit(()-&gt;guids.parallelStream().map(atlasUtilService::getAtlasEntityByGuid).collect(Collectors.toList())).get();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException | ExecutionException e) &#123;</span><br><span class="line">                log.error(<span class="string">&quot;atlas 查询guid&#123;&#125;失败&quot;</span>,guids,e);</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">            &#125;</span><br><span class="line">            LineageRelations.set(<span class="keyword">new</span> <span class="title class_">AtlasEntity</span>.AtlasEntitiesWithExtInfo(entities));</span><br><span class="line">            <span class="keyword">return</span> LineageRelations.get();</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+<p>接口调用平均 0.7s</p>
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>atlas</tag>
+        <tag>parallelStream</tag>
+        <tag>ThreadLocal</tag>
+        <tag>forkJoinPool</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>wsl系统修改安装目录</title>
+    <url>/2023/04/23/dockerwindows/</url>
+    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#显示所有wsl分发子系统</span></span><br><span class="line">wsl -l --all -v</span><br><span class="line"></span><br><span class="line"><span class="comment">#导出系统到其他磁盘</span></span><br><span class="line">wsl --<span class="built_in">export</span> Ubuntu-20.04 D:\ubuntu20.04.tar</span><br><span class="line"></span><br><span class="line"><span class="comment">#注销当前分发版本</span></span><br><span class="line">wsl --unregister Ubuntu-20.04</span><br><span class="line"></span><br><span class="line"><span class="comment">#重新导入</span></span><br><span class="line">wsl --import Ubuntu-20.04 D:\wsl\ubuntu D:\ubuntu20.04.tar --version 2</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置默认登陆用户为安装时用户名</span></span><br><span class="line"><span class="comment">#ubuntu2004 config --default-user Username</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#删除导出的包</span></span><br><span class="line">del D:\ubuntu20.04.tar</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>docker快速安装mysql</title>
+    <url>/2023/04/26/docker%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85mysql/</url>
+    <content><![CDATA[<p>安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#拉取镜像</span></span><br><span class="line">docker pull mysql</span><br><span class="line"></span><br><span class="line">docker run -p 23306:3306 --name mysql --restart=always -v /mysql/log:/var/log/mysql -v /mysql/data:/var/lib/mysql  -e MYSQL_ROOT_PASSWORD=root  mysql</span><br></pre></td></tr></table></figure>
+
+<p>进入容器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it mysql /bin/bash</span><br><span class="line"></span><br><span class="line">mysql -p root</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>firewall-cmd常用命令</title>
+    <url>/2023/12/06/firewall-cmd%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="增加"><a href="#增加" class="headerlink" title="增加"></a>增加</h2><h4 id="新增指定端口通过"><a href="#新增指定端口通过" class="headerlink" title="新增指定端口通过"></a>新增指定端口通过</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=80/tcp --permanent </span><br></pre></td></tr></table></figure>
+
+<h4 id="新增指定区间端口通过"><a href="#新增指定区间端口通过" class="headerlink" title="新增指定区间端口通过"></a>新增指定区间端口通过</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=1-65553/tcp --permanent </span><br></pre></td></tr></table></figure>
+
+<h4 id="新增复杂规则"><a href="#新增复杂规则" class="headerlink" title="新增复杂规则"></a>新增复杂规则</h4><p>指定ip可以访问指定端口</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo firewall-cmd --permanent --add-rich-rule=<span class="string">&#x27;rule family=&quot;ipv4&quot; source address=&quot;192.168.1.2&quot; port protocol=&quot;tcp&quot; port=&quot;30123&quot; accept&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ol>
+<li><code>family</code>: 指定 IP 地址协议，可以是 <code>ipv4</code> 或 <code>ipv6</code>。</li>
+<li><code>source</code>: 指定源 IP 地址或地址段。</li>
+<li><code>port</code>: 指定端口号。</li>
+<li><code>protocol</code>: 指定协议，例如 <code>tcp</code> 或 <code>udp</code>。</li>
+<li><code>service</code>: 指定服务名称。</li>
+<li><code>accept</code>: 允许匹配规则通过。</li>
+<li><code>reject</code>: 拒绝匹配规则。</li>
+<li><code>log</code>: 记录匹配规则的日志。</li>
+</ol>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>删除指定端口</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">firewall-cmd --zone= public --remove-port=80/tcp --permanent</span><br></pre></td></tr></table></figure>
+
+<p>清除规则</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo firewall-cmd --complete-reload</span><br></pre></td></tr></table></figure>
+
+<h2 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h2><p>修改后立即生效</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><p>查看所有端口</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo firewall-cmd --list-ports</span><br></pre></td></tr></table></figure>
+
+<p>查看所有</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo firewall-cmd --list-all</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>firewall</tag>
+        <tag>防火墙</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>flink基础1</title>
+    <url>/2023/04/04/flink%E5%9F%BA%E7%A1%801/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>github图床测试</title>
+    <url>/2023/02/24/githu/</url>
+    <content><![CDATA[<p>git </p>
+<p><img src="https://raw.githubusercontent.com/artemiskami/img/master/typroatyproa822b6eae65463d5e92f5c79c559e1dcc.jpg" alt="typroa822b6eae65463d5e92f5c79c559e1dcc"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>groovy 基本语法 &lt;1&gt;</title>
+    <url>/2023/03/04/groovy2/</url>
+    <content><![CDATA[<h2 id="数值"><a href="#数值" class="headerlink" title="数值"></a>数值</h2><p>groovy 中数字表现为对象，都是Interge的实例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">graph TD;</span><br><span class="line">	Number--&gt;Byte</span><br><span class="line">	Number--&gt;Interge</span><br><span class="line">	Number--&gt;Double</span><br><span class="line">	Number--&gt;Float</span><br><span class="line">	Number--&gt;Short</span><br><span class="line">	Number--&gt;Long</span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>可以使用单引号（<code>&#39;&#39;</code>），双引号（<code>&quot;&quot;</code>）,三引号（<code>&#39;&#39;&#39;&#39;&#39;&#39;</code>）三个单引号</p>
+<p>双引号<code>&quot;&quot;</code>内可使用<code>$&#123;var.field&#125;</code>直接写代码</p>
+<p>三引号<code>&#39;&#39;&#39;&#39;&#39;&#39;</code>可写多行换行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package primary</span><br><span class="line"></span><br><span class="line">class StringDemo &#123;</span><br><span class="line"></span><br><span class="line">    static void main(String[] args) &#123;</span><br><span class="line">        def str = &#x27;&#x27;&#x27;石头人</span><br><span class="line">vs</span><br><span class="line">托儿索 &#x27;&#x27;&#x27;;</span><br><span class="line">        println str</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">石头人</span><br><span class="line">vs</span><br><span class="line">托儿索 </span><br></pre></td></tr></table></figure>
+
+<h2 id="范围"><a href="#范围" class="headerlink" title="范围"></a>范围</h2><p>groovy的特殊语法可以用 rang来表示一个范围内的序列</p>
+<p>例如</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="type">void</span> main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">def</span> a = <span class="number">1.</span><span class="number">.10</span></span><br><span class="line"></span><br><span class="line">       <span class="keyword">for</span> (i <span class="keyword">in</span> a)</span><br><span class="line">           println i</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出结果为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td></tr></table></figure>
+
+
+
+<p>groovy的范围序列由首尾两个值表示，可以包含，也可以排除</p>
+<ul>
+<li><p><code>1..&lt;10 </code>：不包含10的序列</p>
+</li>
+<li><p><code>&#39;a&#39;..&#39;x&#39;</code>：字符序列</p>
+</li>
+<li><p><code>&#39;a&#39;..&#39;B&#39;</code>:结果为 (a&#96;_^][ZYXWVUTSRQPONMLKJIHGFEDCB),这种序列顺序是按照ASCII码排列，同时可以降序</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>方法</th>
+<th>用法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>contains()</td>
+<td>println(b.contains(a))</td>
+<td>包含</td>
+</tr>
+<tr>
+<td>2</td>
+<td>get()</td>
+<td></td>
+<td>获取位置元素,同数组下标一致，从0开始</td>
+</tr>
+<tr>
+<td>3</td>
+<td>getFrom()</td>
+<td></td>
+<td>获取上限</td>
+</tr>
+<tr>
+<td>4</td>
+<td>getTo()</td>
+<td></td>
+<td>获取下限</td>
+</tr>
+<tr>
+<td>5</td>
+<td>isReverse()</td>
+<td></td>
+<td>是否逆序</td>
+</tr>
+<tr>
+<td>6</td>
+<td>subList()</td>
+<td>b.subList(0,2)</td>
+<td>截取子序列，有趣的是，序列是<code>逆序</code>的时候，只能获取下限所在的元素</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>groovy里面的列表形式就是数组，列表里面可以用是不同类型的元素，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">static void main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">        def list1 = [ &#x27;a&#x27;,1,[1,new File(&quot;/root&quot;)],10L]</span><br><span class="line"></span><br><span class="line">        for (i in list1) &#123;</span><br><span class="line">            println i</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">a</span><br><span class="line">1</span><br><span class="line">[1, \root]</span><br><span class="line">10</span><br></pre></td></tr></table></figure>
+
+<p>在尾部添加元素：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">list1.plus(&#x27;ddd&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>等效于：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">list1 + &#x27;ddd&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>同理：</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">list1.minus(<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line"><span class="comment">// 等效于</span></span><br><span class="line">list1 - <span class="string">&#x27;a&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里取得的是子列表，不会对原列表产生影响，相当于数组对象</p>
+<h4 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h4><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>例子</th>
+<th>描述</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>add()</td>
+<td>list2.add(1)</td>
+<td>将新值添加到列表末尾</td>
+<td></td>
+</tr>
+<tr>
+<td>remove()</td>
+<td>remove(‘1’)&#x2F;remove(1)</td>
+<td>删除指定index的元素或者指定元素，有意思的地方在于<br />当你删除[1]中的元素’1’时，不能通过删除元素的方式，<br />index的优先级是高于元素的remove,会报错超出数组</td>
+<td></td>
+</tr>
+<tr>
+<td>get()</td>
+<td>list2.get(1)</td>
+<td>和list2[1]效果一样</td>
+<td></td>
+</tr>
+<tr>
+<td>pop()</td>
+<td>list2.pop()</td>
+<td>彭，弹出第一个元素，值得一提的是groovy之前，这个函数是删除最后一个元素<br />完全相反的实现，有点东西</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="映射"><a href="#映射" class="headerlink" title="映射"></a>映射</h2><p>就是map啊，别名有：字典、关联数组巴拉巴拉。就是散列键值对。</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> m = [<span class="string">&#x27;name&#x27;</span>:<span class="string">&quot;张三&quot;</span>,<span class="string">&#x27;age&#x27;</span>:<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>方法和java没啥区别</p>
+<p><code>put</code>，<code>get</code></p>
+<h2 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h2><p>用的java.util.Date，没区别，也能用jdk8的LocalDateTime :-P</p>
+<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>可以直接作为if表达式的条件</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"> <span class="keyword">def</span> a = ~<span class="string">&#x27;Gro*vy&#x27;</span></span><br><span class="line"><span class="keyword">if</span>(<span class="string">&#x27;Groovy&#x27;</span>  =~ a)&#123;</span><br><span class="line">    println <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><p>和java一样，毕竟都是jvm :-)</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">         <span class="keyword">def</span> arr = <span class="keyword">new</span> <span class="type">int</span>[<span class="number">3</span>];</span><br><span class="line">         arr[<span class="number">5</span>] = <span class="number">5</span>;</span><br><span class="line">      &#125; <span class="keyword">catch</span>(Exception ex) &#123;</span><br><span class="line">         println(<span class="string">&quot;Catching the exception&quot;</span>);</span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>和java一样</p>
+<ul>
+<li>接口</li>
+<li>抽象类</li>
+<li>内部类</li>
+<li>继承多态</li>
+<li>泛型</li>
+</ul>
+<h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><p>groovy的特征 trait 就是有默认方法，同时有自己参数 的接口，参数和方法都可以被实现类继承,特征之间可以继承</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package primary</span><br><span class="line"></span><br><span class="line">class TraitDemo &#123;</span><br><span class="line"></span><br><span class="line">    static void main(String[] args) &#123;</span><br><span class="line">       def marks =   new ManStudent()</span><br><span class="line">        marks.name=&#x27;marks&#x27;</span><br><span class="line">        marks.run()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ManStudent implements Student&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">trait Student implements people&#123;</span><br><span class="line"></span><br><span class="line">    def name</span><br><span class="line"></span><br><span class="line">    void run()&#123;</span><br><span class="line">        println( &quot;student $&#123;name&#125; is running&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface people&#123;</span><br><span class="line">    void run();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果为</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">student marks is running</span><br></pre></td></tr></table></figure>
+
+<p>话说，<code>java interface</code>也可以用默认方法</p>
+<h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><p>闭包就是匿名代码块</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def a = &#x27;a&#x27;</span><br><span class="line">def closer = &#123; println &quot; hello ! $&#123;a&#125; &quot; &#125;</span><br><span class="line">closer.call()</span><br></pre></td></tr></table></figure>
+
+<p>闭包可以调用形参，可以使用变量</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> a = <span class="string">&#x27;world&#x27;</span></span><br><span class="line"><span class="keyword">def</span> closer = &#123; println <span class="string">&quot; hello ! $&#123;a&#125; &quot;</span> &#125;</span><br><span class="line"><span class="keyword">def</span> closerParam = &#123; param1, pram2 -&gt; println <span class="string">&quot;$&#123;param1&#125; $&#123;pram2&#125; &quot;</span> &#125;</span><br><span class="line"></span><br><span class="line">closer.call()</span><br><span class="line">closerParam.call(<span class="string">&quot;李四&quot;</span>, <span class="string">&quot;臧三&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>可以作为参数传递</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="type">void</span> main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">def</span> closer = &#123; println <span class="string">&quot; hello ! $&#123;a&#125; &quot;</span> &#125;</span><br><span class="line">	display(closer)</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="type">void</span> display(closer) &#123;</span><br><span class="line">        closer.call()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以在遍历中使用闭包</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> list = <span class="string">&#x27;a&#x27;</span>..<span class="string">&#x27;f&#x27;</span></span><br><span class="line">list.each &#123; println it &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> m = [<span class="string">&#x27;a&#x27;</span>: <span class="string">&#x27;1&#x27;</span>, <span class="string">&quot;b&quot;</span>: <span class="string">&quot;2&quot;</span>]</span><br><span class="line">m.each &#123; println <span class="string">&quot;$&#123;it.key&#125;:$&#123;it.value&#125;&quot;</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>集合常用的方法</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line">println list.find &#123; it &gt; <span class="string">&#x27;b&#x27;</span> &#125;</span><br><span class="line">println list.findAll &#123; it &gt; <span class="string">&#x27;b&#x27;</span> &#125;</span><br><span class="line">println list.every &#123; it &gt; <span class="string">&#x27;b&#x27;</span> &#125;</span><br><span class="line">println list.any &#123; it &gt; <span class="string">&#x27;b&#x27;</span> &#125;</span><br><span class="line">println list.collect &#123; it + <span class="string">&#x27;b&#x27;</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">c</span><br><span class="line">[c, d, e, f]</span><br><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="literal">true</span></span><br><span class="line">[ab, bb, cb, db, eb, fb]</span><br></pre></td></tr></table></figure>
+
+<p>find、findAll是过滤，every、any是判断，collect是获取数据转换获取结果集。</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>单行</p>
+<p>多行</p>
+<figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>hadoop命令</title>
+    <url>/2023/03/31/hadoop%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="hadoop基础命令"><a href="#hadoop基础命令" class="headerlink" title="hadoop基础命令"></a>hadoop基础命令</h2><p>查看</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@hadoop102 hadoop-3.1.3]$ bin/hadoop fs</span><br><span class="line"> </span><br><span class="line">[-appendToFile &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">        [-cat [-ignoreCrc] &lt;src&gt; ...]</span><br><span class="line">        [-chgrp [-R] GROUP PATH...]</span><br><span class="line">        [-chmod [-R] &lt;MODE[,MODE]... | OCTALMODE&gt; PATH...]</span><br><span class="line">        [-chown [-R] [OWNER][:[GROUP]] PATH...]</span><br><span class="line">        [-copyFromLocal [-f] [-p] &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">        [-copyToLocal [-p] [-ignoreCrc] [-crc] &lt;src&gt; ... &lt;localdst&gt;]</span><br><span class="line">        [-count [-q] &lt;path&gt; ...]</span><br><span class="line">        [-cp [-f] [-p] &lt;src&gt; ... &lt;dst&gt;]</span><br><span class="line">        [-df [-h] [&lt;path&gt; ...]]</span><br><span class="line">        [-du [-s] [-h] &lt;path&gt; ...]</span><br><span class="line">        [-get [-p] [-ignoreCrc] [-crc] &lt;src&gt; ... &lt;localdst&gt;]</span><br><span class="line">        [-getmerge [-nl] &lt;src&gt; &lt;localdst&gt;]</span><br><span class="line">        [-help [cmd ...]]</span><br><span class="line">        [-ls [-d] [-h] [-R] [&lt;path&gt; ...]]</span><br><span class="line">        [-mkdir [-p] &lt;path&gt; ...]</span><br><span class="line">        [-moveFromLocal &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">        [-moveToLocal &lt;src&gt; &lt;localdst&gt;]</span><br><span class="line">        [-mv &lt;src&gt; ... &lt;dst&gt;]</span><br><span class="line">        [-put [-f] [-p] &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">        [-rm [-f] [-r|-R] [-skipTrash] &lt;src&gt; ...]</span><br><span class="line">        [-rmdir [--ignore-fail-on-non-empty] &lt;dir&gt; ...]</span><br><span class="line">&lt;acl_spec&gt; &lt;path&gt;]]</span><br><span class="line">        [-setrep [-R] [-w] &lt;rep&gt; &lt;path&gt; ...]</span><br><span class="line">        [-stat [format] &lt;path&gt; ...]</span><br><span class="line">        [-tail [-f] &lt;file&gt;]</span><br><span class="line">        [-test -[defsz] &lt;path&gt;]</span><br><span class="line">        [-text [-ignoreCrc] &lt;src&gt; ...]</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>hexo添加本地搜索框</title>
+    <url>/2023/07/18/hexo%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>github actions</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo添加mermaid</title>
+    <url>/2023/03/04/hexo%E6%B7%BB%E5%8A%A0mermaid/</url>
+    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$cd</span> blog/  <span class="comment"># 走到博客根目录</span></span><br><span class="line"><span class="variable">$yarn</span> add hexo-filter-mermaid-diagrams  <span class="comment"># 安装mermaid插件</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># Mermaid tag</span></span><br><span class="line"><span class="attr">mermaid:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Available themes: default | dark | forest | neutral</span></span><br><span class="line">  <span class="attr">theme:</span> <span class="string">forest</span></span><br><span class="line">  <span class="attr">cdn:</span> <span class="string">//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js</span></span><br><span class="line">  <span class="comment">#cdn: //cdnjs.cloudflare.com/ajax/libs/mermaid/8.0.0/mermaid.min.js</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>hexo添加本地搜索框</title>
+    <url>/2023/07/18/hexo%E6%B7%BB%E5%8A%A0%E6%9C%AC%E5%9C%B0%E6%90%9C%E7%B4%A2%E6%A1%86/</url>
+    <content><![CDATA[<h3 id="添加本地依赖插件"><a href="#添加本地依赖插件" class="headerlink" title="添加本地依赖插件"></a>添加本地依赖插件</h3><p>根目录下执行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-search --save</span><br><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改根目录下配置文件"><a href="#修改根目录下配置文件" class="headerlink" title="修改根目录下配置文件"></a>修改根目录下配置文件</h3><p>修改根目录下<code>_config.yml</code>，添加配置</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">10000</span></span><br><span class="line">  <span class="attr">content:</span> <span class="literal">true</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="修改主题的配置文件"><a href="#修改主题的配置文件" class="headerlink" title="修改主题的配置文件"></a>修改主题的配置文件</h2><p><code>./themes/next</code>下的<code>_config.yml</code>，不同的主题目录不同。修改配置</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">local_search:</span></span><br><span class="line">	<span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>k8s命令</title>
+    <url>/2023/05/22/k8s%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>linux修改主机名</title>
+    <url>/2023/12/19/linux%E4%BF%AE%E6%94%B9%E4%B8%BB%E6%9C%BA%E5%90%8D/</url>
+    <content><![CDATA[<h2 id="修改主机名"><a href="#修改主机名" class="headerlink" title="修改主机名"></a>修改主机名</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hostnamectl set-hostname </span><br></pre></td></tr></table></figure>
+<h2 id="修改hosts"><a href="#修改hosts" class="headerlink" title="修改hosts"></a>修改hosts</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/hosts</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>linux</tag>
+        <tag>hostname</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux远程连接命令</title>
+    <url>/2023/04/23/linux%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">ssh -p 22 root@127.0.0.1</span><br><span class="line"></span><br><span class="line">-p 指定端口号</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="scp"><a href="#scp" class="headerlink" title="scp"></a>scp</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">scp [-1246BCpqrv] [-c cipher] [-F ssh_config] [-i identity_file]</span><br><span class="line">[-l <span class="built_in">limit</span>] [-o ssh_option] [-P port] [-S program]</span><br><span class="line">[[user@]host1:]file1 [...] [[user@]host2:]file2</span><br><span class="line"></span><br><span class="line">scp -r -P 22 -p sourceFilePath root@127.0.0.1:targetFilePath </span><br><span class="line"></span><br><span class="line">-P 指定端口号 大写</span><br><span class="line">-p 保存源文件的访问权限和最后修改时间 小写</span><br><span class="line">-r 递归复制目录</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>lua语法</title>
+    <url>/2023/08/05/lua%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>mongodb常用命令</title>
+    <url>/2023/05/26/mongodb%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="表空间查询命令"><a href="#表空间查询命令" class="headerlink" title="表空间查询命令"></a>表空间查询命令</h2><p>查看表op_playback占用空间大小，返回GB</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">db.op_playback.stats(<span class="number">1073741824</span>)</span><br></pre></td></tr></table></figure>
+
+<p>返回MB</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">db.stats(<span class="number">1048576</span>)</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>mysql常用</title>
+    <url>/2023/08/21/mysql%E5%B8%B8%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 查看sql执行次数</span><br><span class="line">SELECT</span><br><span class="line">    DIGEST_TEXT,</span><br><span class="line">    COUNT_STAR AS EXECUTION_COUNT</span><br><span class="line">FROM</span><br><span class="line">    performance_schema.events_statements_summary_by_digest</span><br><span class="line">WHERE</span><br><span class="line">        COUNT_STAR &gt; 0</span><br><span class="line">ORDER BY</span><br><span class="line">    EXECUTION_COUNT DESC;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 查看占用时间</span><br><span class="line">SELECT</span><br><span class="line">    DIGEST_TEXT,</span><br><span class="line">    MAX_TIMER_WAIT / 1000000 AS MAX_EXECUTION_TIME_MS</span><br><span class="line">FROM</span><br><span class="line">    performance_schema.events_statements_summary_by_digest</span><br><span class="line">WHERE</span><br><span class="line">    MAX_TIMER_WAIT IS NOT NULL</span><br><span class="line">ORDER BY</span><br><span class="line">    MAX_EXECUTION_TIME_MS DESC;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>mysql数据库</category>
+      </categories>
+      <tags>
+        <tag>性能</tag>
+        <tag>mysql数据库</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mysql常用函数</title>
+    <url>/2023/11/10/mysql%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="时间处理函数"><a href="#时间处理函数" class="headerlink" title="时间处理函数"></a>时间处理函数</h2><ol>
+<li><h3 id="时间转换函数"><a href="#时间转换函数" class="headerlink" title="时间转换函数"></a>时间转换函数</h3></li>
+</ol>
+<ul>
+<li><h4 id="时间格式化函数为字符串"><a href="#时间格式化函数为字符串" class="headerlink" title="时间格式化函数为字符串"></a>时间格式化函数为字符串</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">date_format(datetime,&#x27;%Y-%m-%d %H:%i:%s.%f&#x27;)</span><br></pre></td></tr></table></figure>
+
+<h5 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mysql&gt;select date_format(now(3),&#x27;%Y-%m-%d %H:%i:%s.%f&#x27;)</span><br><span class="line">2023-11-10 10:23:19.388000</span><br></pre></td></tr></table></figure>
+
+<h5 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h5><p><code>%Y-%m-%d %H:%i:%s.%f</code>翻译一下就是 <code>年-月-日 时:分:秒.微妙</code>。</p>
+<p>这里最后三位是000，是因为<code>date_format</code>的格式化函数中只有6位小数位。</p>
+<h5 id="更多："><a href="#更多：" class="headerlink" title="更多："></a>更多：</h5><p><a href="https://dev.mysql.com/doc/refman/8.0/en/date-and-time-type-syntax.html">https://dev.mysql.com/doc/refman/8.0/en/date-and-time-type-syntax.html</a></p>
+</li>
+<li><h4 id="时间类型转为秒数函数"><a href="#时间类型转为秒数函数" class="headerlink" title="时间类型转为秒数函数"></a>时间类型转为秒数函数</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">TIME_TO_SEC(dateTime)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mysql&gt;select TIME_TO_SEC(&#x27;01:00:00&#x27;)</span><br><span class="line">3600</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p>将1小时转为秒数。支持默认格式的时间字符串，也支持时间类型（time）。</p>
+</li>
+</ul>
+<h2 id="开窗函数"><a href="#开窗函数" class="headerlink" title="开窗函数"></a>开窗函数</h2><ul>
+<li><h3 id="LAG函数"><a href="#LAG函数" class="headerlink" title="LAG函数"></a>LAG函数</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">LAG (expression, n, default_value) OVER (PARTITION BY partition_expression ORDER BY sort_expression)</span><br></pre></td></tr></table></figure>
+
+<h5 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mysql&gt;select LAG(END_DATE) OVER (ORDER BY id) AS previous_endDate , END_DATE from WORK_INSTANCES ORDER BY id WINDOW w AS (ORDER BY t);</span><br><span class="line">|2023-01-02 02:01:01 | 2023-01-02 02:07:52 |</span><br></pre></td></tr></table></figure>
+
+<h5 id="说明：-1"><a href="#说明：-1" class="headerlink" title="说明："></a>说明：</h5><p>lag函数用于获取查询列表的上一行中的字段数据，上面的示例就是用于获取上一行的结束时间。可用于比较行之间的数据，例如获取两行之间的时间差：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mysql&gt; select TIME_TO_SEC(TIMEDIFF(CREATION_DATE,LAG(CREATION_DATE) OVER (ORDER BY id)))/60  from WORK_INSTANCES ORDER BY id;</span><br></pre></td></tr></table></figure>
+
+<p>partition_expression：分组的字段</p>
+<p>sort_expression： 排序字段</p>
+<h5 id="更多参考："><a href="#更多参考：" class="headerlink" title="更多参考："></a>更多参考：</h5><p><a href="https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_lag">https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html#function_lag</a></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>mysql</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+        <tag>over()</tag>
+        <tag>window function</tag>
+        <tag>窗口函数</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mysql时间范围常用SQL</title>
+    <url>/2023/11/10/mysql%E6%97%B6%E9%97%B4%E8%8C%83%E5%9B%B4%E5%B8%B8%E7%94%A8SQL/</url>
+    <content><![CDATA[<ol>
+<li><h3 id="查询两个什么时间没有执行中的任务"><a href="#查询两个什么时间没有执行中的任务" class="headerlink" title="查询两个什么时间没有执行中的任务"></a>查询两个什么时间没有执行中的任务</h3></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">SELECT date_format(previous_endDate, &#x27;%H:%i:%S&#x27;) time, a.*</span><br><span class="line">from (select JOW.NAME,</span><br><span class="line">             instance.CREATION_DATE,</span><br><span class="line">             instance.END_DATE,</span><br><span class="line">             LAG(instance.END_DATE) OVER w                                                          AS previous_endDate,</span><br><span class="line">             TIME_TO_SEC(TIMEDIFF(instance.CREATION_DATE, LAG(instance.CREATION_DATE) OVER w)) / 60 as create_def,</span><br><span class="line">             TIME_TO_SEC(TIMEDIFF(instance.CREATION_DATE, LAG(instance.END_DATE) OVER w)) / 60      as update_def</span><br><span class="line">      from SCH_WORK_INSTANCES instance</span><br><span class="line">               join dehoop.JOB_OUTLINE_WORKS JOW on instance.WORK_ID = JOW.id and JOW.type = &#x27;SparkSQL&#x27;</span><br><span class="line">      where date_format(instance.CREATION_DATE, &#x27;%Y-%m-%d&#x27;) &gt; &#x27;2023-9-05&#x27;</span><br><span class="line">        and name &lt;&gt; &#x27;test001&#x27;</span><br><span class="line">      WINDOW w as (ORDER BY instance.id)</span><br><span class="line">      order by instance.id) a</span><br><span class="line">where a.create_def &gt; 30</span><br><span class="line">  and update_def &gt; 30;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>数据库</category>
+        <category>mysql</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+        <tag>时间范围</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>redis常用命令</title>
+    <url>/2023/08/01/redis%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h2><p>登录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -h xx -p 6217 -a passwd</span><br></pre></td></tr></table></figure>
+
+<p>查询key</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">keys &#x27;pattern&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>删除 key</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">del key</span><br></pre></td></tr></table></figure>
+
+<p>批量删除键值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">r</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>spring 读取资源文件</title>
+    <url>/2023/03/22/spring%E8%AF%BB%E5%8F%96%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<h2 id="spring-读取资源文件为字符串的方式"><a href="#spring-读取资源文件为字符串的方式" class="headerlink" title="spring 读取资源文件为字符串的方式"></a>spring 读取资源文件为字符串的方式</h2><p>获取资源文件转为字节数组来读取</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">sqlSb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(FileCopyUtils.copyToByteArray(<span class="keyword">new</span> <span class="title class_">ClassPathResource</span>(sqlFile).getFile()),StandardCharsets.UTF_8);</span><br></pre></td></tr></table></figure>
+
+<p>资源文件转为流来读取</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">sqlSb</span> <span class="operator">=</span> StreamUtils.copyToString(<span class="keyword">new</span> <span class="title class_">ClassPathResource</span>(sqlFile).getInputStream(),StandardCharsets.UTF_8);</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>windows ssh免密 linux</title>
+    <url>/2023/11/22/windows-ssh%E5%85%8D%E5%AF%86-linux/</url>
+    <content><![CDATA[<h3 id="1-安装OpenSSH："><a href="#1-安装OpenSSH：" class="headerlink" title="1.安装OpenSSH："></a>1.安装OpenSSH：</h3><ul>
+<li>在Windows 10上，你可以通过“控制面板” -&gt; “程序” -&gt; “程序和功能” -&gt; “启用或关闭Windows功能”中启用“OpenSSH客户端”和“OpenSSH服务器”。</li>
+<li>如果你使用的是较早版本的Windows，请安装<a href="https://github.com/PowerShell/Win32-OpenSSH/releases">Win32-OpenSSH</a>。</li>
+</ul>
+<h3 id="2-生成SSH密钥："><a href="#2-生成SSH密钥：" class="headerlink" title="2.生成SSH密钥："></a>2.生成SSH密钥：</h3><ul>
+<li><p>打开 PowerShell 或命令提示符。</p>
+</li>
+<li><p>运行以下命令生成SSH密钥对：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>按照提示，选择密钥的保存位置和输入密码（或直接按回车键留空）。</p>
+</li>
+</ul>
+<h3 id="3-复制公钥到Linux服务器："><a href="#3-复制公钥到Linux服务器：" class="headerlink" title="3.复制公钥到Linux服务器："></a>3.复制公钥到Linux服务器：</h3><ul>
+<li>打开生成的公钥文件，通常是 <code>C:\Users\YourUsername\.ssh\id_rsa.pub</code>。你可以使用文本编辑器如Notepad来打开。</li>
+<li>复制公钥内容。</li>
+</ul>
+<p>在Linux服务器上添加公钥：</p>
+<ul>
+<li><p>在Linux服务器上，打开终端。</p>
+</li>
+<li><p>打开或创建<code>~/.ssh/authorized_keys</code></p>
+<p>文件（如果不存在）：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir -p ~/.ssh</span><br><span class="line">touch ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将从Windows复制的公钥粘贴到 <code>authorized_keys</code>  文件中：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;paste_copied_public_key_here&quot; &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+<p>请替换<code>paste_copied_public_key_here</code>为你从Windows复制的公钥。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>windows</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>windows</tag>
+        <tag>ssh</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>安装docker windows</title>
+    <url>/2023/04/18/wsl%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%20/</url>
+    <content><![CDATA[<h3 id="安装-Hyper-V"><a href="#安装-Hyper-V" class="headerlink" title="安装 Hyper-V"></a>安装 Hyper-V</h3><p>Hyper-V 是微软开发的虚拟机，类似于 VMWare 或 VirtualBox，仅适用于 Windows 10。这是 Docker Desktop for Windows 所使用的虚拟机。</p>
+<p>但是，这个虚拟机一旦启用，QEMU、VirtualBox 或 VMWare Workstation 15 及以下版本将无法使用！如果你必须在电脑上使用其他虚拟机（例如开发 Android 应用必须使用的模拟器），请不要使用 Hyper-V！</p>
+<h3 id="开启-Hyper-V"><a href="#开启-Hyper-V" class="headerlink" title="开启 Hyper-V"></a>开启 Hyper-V</h3><p><img src="https://www.runoob.com/wp-content/uploads/2017/12/1513668234-4363-20171206211136409-1609350099.png" alt="img"></p>
+<p>程序和功能</p>
+<p><img src="https://www.runoob.com/wp-content/uploads/2017/12/1513668234-4368-20171206211345066-1430601107.png" alt="img"></p>
+<p>启用或关闭Windows功能</p>
+<p><img src="https://www.runoob.com/wp-content/uploads/2017/12/1513668234-9748-20171206211435534-1499766232.png" alt="img"></p>
+<p>选中Hyper-V</p>
+<p><img src="https://www.runoob.com/wp-content/uploads/2017/12/1513668234-6433-20171206211858191-1177002365.png" alt="img"></p>
+<p>也可以通过命令来启用 Hyper-V ，请右键开始菜单并以管理员身份运行 PowerShell，执行以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All</span><br></pre></td></tr></table></figure>
+
+<p>升级wsl</p>
+<p>管理员身份运行powershell</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wsl --update</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\玄月\AppData\Roaming\Typora\typora-user-images\image-20230418162553994.png" alt="image-20230418162553994"></p>
+<p>点击 <a href="https://hub.docker.com/?overlay=onboarding">Get started with Docker Desktop</a>，并下载 Windows 的版本，如果你还没有登录，会要求注册登录：</p>
+<p><img src="https://www.runoob.com/wp-content/uploads/2016/05/5AEB69DA-6912-4B08-BE79-293FBE659894.png" alt="img"></p>
+<h3 id="运行安装文件"><a href="#运行安装文件" class="headerlink" title="运行安装文件"></a>运行安装文件</h3><p>双击下载的 Docker for Windows Installer 安装文件，一路 Next，点击 Finish 完成安装。</p>
+<p><img src="https://www.runoob.com/wp-content/uploads/2017/12/1513669129-6146-20171206214940331-1428569749.png" alt="img"></p>
+<p><img src="https://www.runoob.com/wp-content/uploads/2017/12/1513668903-9668-20171206220321613-1349447293.png" alt="img"></p>
+<p>安装完成后，Docker 会自动启动。通知栏上会出现个小鲸鱼的图标<img src="https://www.runoob.com/wp-content/uploads/2017/12/1513582421-4552-whale-x-win.png" alt="img">，这表示 Docker 正在运行。</p>
+<p>桌边也会出现三个图标，如下图所示：</p>
+<p>我们可以在命令行执行 docker version 来查看版本号，docker run hello-world 来载入测试镜像测试。</p>
+<p>如果没启动，你可以在 Windows 搜索 Docker 来启动：</p>
+<p><img src="https://www.runoob.com/wp-content/uploads/2017/12/1513585082-6751-docker-app-search.png" alt="img"></p>
+<p>启动后，也可以在通知栏上看到小鲸鱼图标：</p>
+<p>win10 启用WSL - 知乎<br>2023年1月6日 打开ubuntu出现Error code: Wsl&#x2F;Service&#x2F;0x8007273d时,管理员身份启动cmd&#x2F;powershell , 运行 netsh winsock reset就可以。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wsl </span><br><span class="line"></span><br><span class="line"><span class="comment">#安装python2</span></span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install python2</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+  </entry>
+  <entry>
+    <title>博客名字</title>
+    <url>/2023/02/23/%E5%8D%9A%E5%AE%A2%E5%90%8D%E5%AD%97/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>groovy 基本语法 &lt;1&gt;</title>
+    <url>/2023/03/03/%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[<h2 id="groovy基本类型"><a href="#groovy基本类型" class="headerlink" title="groovy基本类型"></a>groovy基本类型</h2><figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> primary</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TypeDemo</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="type">void</span> main(args) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> x = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">        <span class="type">long</span> y = <span class="number">100</span>L;</span><br><span class="line"></span><br><span class="line">        <span class="type">float</span> a = <span class="number">10.56</span>f;</span><br><span class="line"></span><br><span class="line">        <span class="type">double</span> b = <span class="number">10.5e40</span>;</span><br><span class="line"></span><br><span class="line">        BigInteger bi = <span class="number">30</span>g;</span><br><span class="line"></span><br><span class="line">        BigDecimal bd = <span class="number">3.5</span>g;</span><br><span class="line"></span><br><span class="line">        println(x);</span><br><span class="line">        println(y);</span><br><span class="line">        println(a);</span><br><span class="line">        println(b);</span><br><span class="line">        println(bi);</span><br><span class="line">        println(bd);</span><br><span class="line"></span><br><span class="line">        println(<span class="string">&quot;The value of x is &quot;</span> + x + <span class="string">&quot;The value of y is &quot;</span> + y);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="groovy特殊运算符"><a href="#groovy特殊运算符" class="headerlink" title="groovy特殊运算符"></a>groovy特殊运算符</h2><h3 id="1-范围运算符"><a href="#1-范围运算符" class="headerlink" title="1.范围运算符"></a>1.范围运算符</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package primary</span><br><span class="line"></span><br><span class="line">class OperatorDemo &#123;</span><br><span class="line"></span><br><span class="line">    static void main(String[] args) &#123;</span><br><span class="line">		</span><br><span class="line">		//定义离散变量组，从0到10</span><br><span class="line">        def range = 0..10 ;</span><br><span class="line">		</span><br><span class="line">        println(range);</span><br><span class="line">        println(range.get(2));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight console"><table><tr><td class="code"><pre><span class="line">0..10</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="运算符优先级"><a href="#运算符优先级" class="headerlink" title="运算符优先级"></a>运算符优先级</h2><table>
+<thead>
+<tr>
+<th><code>++</code> ，<code>--</code> ，<code>+</code> ，<code>-</code></th>
+<th>预增&#x2F;减（自增&#x2F;减），一元加，一元减</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>*</code>，<code> /</code>， <code>％</code></td>
+<td>乘法，除法，取模</td>
+</tr>
+<tr>
+<td><code>+</code>，<code>-</code></td>
+<td>加法，减法（二元）</td>
+</tr>
+<tr>
+<td><code>==</code>，<code>！=</code>， <code>&lt;=&gt;</code></td>
+<td>等于，不等于，比较运算符</td>
+</tr>
+<tr>
+<td><code>＆</code></td>
+<td>二进制&#x2F;位运算符与</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>二进制&#x2F;位异或</td>
+</tr>
+<tr>
+<td>&#96;</td>
+<td>&#96;</td>
+</tr>
+<tr>
+<td>！</td>
+<td>逻辑非</td>
+</tr>
+<tr>
+<td><code>&amp;&amp;</code></td>
+<td>逻辑与</td>
+</tr>
+<tr>
+<td>&#96;</td>
+<td></td>
+</tr>
+<tr>
+<td><code>=</code>，<code>+=</code>，<code>-=</code>，<code>*=</code>，<code>/=</code>，<code>%=</code>，<code>**=</code></td>
+<td>各种赋值运算符</td>
+</tr>
+</tbody></table>
+<h2 id="for-in语句"><a href="#for-in语句" class="headerlink" title="for-in语句"></a>for-in语句</h2><p>特殊循环，类似于java for 循环增强 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package primary</span><br><span class="line"></span><br><span class="line">class forDemo &#123;</span><br><span class="line"></span><br><span class="line">    static void main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">        def range = 0..10</span><br><span class="line"></span><br><span class="line">        for (i in range) &#123;</span><br><span class="line">            println(i)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        def users = [&quot;z&quot;:21,&quot;s&quot;:11]</span><br><span class="line"></span><br><span class="line">        for(user in users)&#123;</span><br><span class="line">            println(user.key+&quot;:&quot;+user.value)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>函数列表默认值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package primary;</span><br><span class="line"></span><br><span class="line">class FunctionDemo &#123;</span><br><span class="line"></span><br><span class="line">    static void main(String[] args) &#123;</span><br><span class="line">        println (sum(1,1))</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    static int sum(int a, int b = 0) &#123;</span><br><span class="line">        a+b</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="IO操作"><a href="#IO操作" class="headerlink" title="IO操作"></a>IO操作</h2><figure class="highlight groovy"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> io</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">IOUtils</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="type">void</span> main(String[] args) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> File(<span class="string">&quot;E://data//test&quot;</span>).eachLine &#123;</span><br><span class="line">            line -&gt; println <span class="string">&quot;line:$line&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//读取文件到字符串</span></span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">&quot;E://data//test&quot;</span>)</span><br><span class="line">        println file.text</span><br><span class="line"></span><br><span class="line">        <span class="comment">//写入文件</span></span><br><span class="line">        <span class="keyword">new</span> File(<span class="string">&quot;E://data//test&quot;</span>).withWriter &#123;</span><br><span class="line">            writer -&gt; writer.writeLine <span class="string">&#x27;Hello World!&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        println file.text</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取文件大小</span></span><br><span class="line">        println <span class="string">&quot;The file $&#123;file.absolutePath&#125; has $&#123;file.length()&#125; bytes&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//判断文件是否是目录</span></span><br><span class="line">        println <span class="string">&quot;File? $&#123;file.isFile()&#125;&quot;</span></span><br><span class="line">        println <span class="string">&quot;Directory? $&#123;file.isDirectory()&#125;&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//创建文件目录</span></span><br><span class="line">        <span class="keyword">def</span> directory = <span class="keyword">new</span> File(<span class="string">&#x27;E:/groovy/Directory&#x27;</span>)</span><br><span class="line">        directory.mkdirs()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> newFile = <span class="keyword">new</span> File(directory, <span class="string">&quot;newFile&quot;</span>)</span><br><span class="line">        newFile.createNewFile()</span><br><span class="line"></span><br><span class="line">        <span class="comment">//复制文件</span></span><br><span class="line">        <span class="keyword">def</span> copyFile = <span class="keyword">new</span> File(directory, <span class="string">&quot;copyFile&quot;</span>)</span><br><span class="line">        copyFile &lt;&lt; newFile</span><br><span class="line"></span><br><span class="line">        println(<span class="string">&quot;copyFile is create:$&#123;copyFile.exists()&#125;&quot;</span>)</span><br><span class="line"></span><br><span class="line">        copyFile.delete()</span><br><span class="line">        println(<span class="string">&quot;copyFile is delete?$&#123;copyFile.exists()&#125;&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">//显示根目录</span></span><br><span class="line">        <span class="keyword">def</span> rootFiles = <span class="keyword">new</span> File(<span class="string">&quot;test&quot;</span>).listRoots()</span><br><span class="line">        rootFiles.each &#123;println it.absolutePath&#125;</span><br><span class="line"></span><br><span class="line">        rootFiles.each &#123;</span><br><span class="line">            <span class="comment">//遍历目录及子集</span></span><br><span class="line">               it.eachFileRecurse()&#123;recurse-&gt;</span><br><span class="line">                    println(recurse.absolutePath)</span><br><span class="line">               &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>安装记录</title>
+    <url>/2023/02/23/%E5%AE%89%E8%A3%85%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p><img src="http://xiyuekami.top/typroa/822b6eae65463d5e92f5c79c559e1dcc%20(1).jpg" alt="822b6eae65463d5e92f5c79c559e1dcc (1)"></p>
+<p>测试图片上传图床</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>达梦快速使用</title>
+    <url>/2023/04/10/%E8%BE%BE%E6%A2%A6%E5%BF%AB%E9%80%9F%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>下载dm数据库docker单实例版本</p>
+<p><a href="https://download.dameng.com/eco/dm8/dm8_20220822_rev166351_x86_rh6_64_ctm.tar">https://download.dameng.com/eco/dm8/dm8_20220822_rev166351_x86_rh6_64_ctm.tar</a></p>
+<p>上传到服务器</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">docker 加载</span></span><br><span class="line">docker load -i dm8_20220822_rev166351_x86_rh6_64_ctm.tar</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">docker 运行</span></span><br><span class="line">docker run -d -p 30023:5236 --restart=always </span><br><span class="line">--name dm8 --privileged=true -e PAGE_SIZE=16 -e LD_LIBRARY_PATH=/opt/dmdbms/bin -e INSTANCE_NAME=dm8_01 -v /data/dm8_01:/opt/dmdbms/data dm8_single:v8.1.2.128_ent_x86_64_ctm_pack4</span><br></pre></td></tr></table></figure>
+
+
+
+<p>安装客户端驱动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mvn install:install-file -DgroupId=dm.jdbc.driver -DartifactId=dm8 -Dversion=18.0.0 -Dpackaging=jar -Dfile=E:\OneDrive\db\dm\Dm8JdbcDriver18-8.1.1.49.jar</span><br></pre></td></tr></table></figure>
+
+
+
+<p>连接信息</p>
+<figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="attr">url</span>: <span class="string">jdbc:dm://IP:PORT/SUPERVISECLOUD?zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8</span></span><br><span class="line"><span class="attr">userName</span>: <span class="string">SYSDBA</span></span><br><span class="line"><span class="attr">password</span>: <span class="string">SYSDBA001</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+  </entry>
+</search>
